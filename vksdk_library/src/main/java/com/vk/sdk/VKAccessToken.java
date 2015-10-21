@@ -25,8 +25,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.vk.sdk.api.VKParameters;
@@ -185,7 +183,7 @@ public class VKAccessToken {
      * @param parameters map that contains token info
      * @return Parsed token
      */
-    public static VKAccessToken tokenFromParameters(@Nullable Map<String, String> parameters) {
+    public static VKAccessToken tokenFromParameters(Map<String, String> parameters) {
         if (parameters == null || parameters.size() == 0) {
             return null;
         }
@@ -284,7 +282,7 @@ public class VKAccessToken {
      * @param newToken New access token to set. If null, removes old token from preferences
      * @return old value of access token
      */
-    static VKAccessToken replaceToken(@NonNull Context ctx, @Nullable VKAccessToken newToken) {
+    static VKAccessToken replaceToken(Context ctx, VKAccessToken newToken) {
         VKAccessToken oldToken = sCurrentToken;
         sCurrentToken = newToken;
         if (sCurrentToken != null) {
@@ -323,7 +321,7 @@ public class VKAccessToken {
      * @param token Usually this is partly filled access token, made after validation
      * @return New access token with updated fields
      */
-    public VKAccessToken copyWithToken(@NonNull VKAccessToken token) {
+    public VKAccessToken copyWithToken(VKAccessToken token) {
         Map<String, String> newTokenParams = tokenParams();
         newTokenParams.putAll(token.tokenParams());
         return VKAccessToken.tokenFromParameters(newTokenParams);

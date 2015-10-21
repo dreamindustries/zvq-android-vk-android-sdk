@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.Nullable;
 
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKAccessTokenTracker;
@@ -39,7 +38,7 @@ public class VKPaymentsReceiver extends BroadcastReceiver {
 
     private static VKAccessTokenTracker tracker = new VKAccessTokenTracker() {
         @Override
-        public void onVKAccessTokenChanged(@Nullable VKAccessToken oldToken, @Nullable VKAccessToken newToken) {
+        public void onVKAccessTokenChanged(VKAccessToken oldToken, VKAccessToken newToken) {
             checkUserInstall(VKUIHelper.getApplicationContext(), false);
         }
     };
@@ -62,13 +61,13 @@ public class VKPaymentsReceiver extends BroadcastReceiver {
         }
     }
 
-    private static boolean isNeedForceOurUser(@Nullable final Intent intent) {
+    private static boolean isNeedForceOurUser(final Intent intent) {
         String referrerStr = intent == null ? null : intent.getStringExtra("referrer");
         return intent != null && "com.android.vending.INSTALL_REFERRER".equals(intent.getAction()) &&
                 referrerStr != null && referrerStr.startsWith("utm_source=vk");
     }
 
-    private static void checkUserInstall(@Nullable final Context ctx, boolean force) {
+    private static void checkUserInstall(final Context ctx, boolean force) {
         if (ctx != null) {
             VKPaymentsServerSender.getInstance(ctx).checkUserInstall(force);
         }

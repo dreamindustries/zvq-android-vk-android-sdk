@@ -30,8 +30,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -61,7 +59,6 @@ public class VKOpenAuthDialog implements DialogInterface.OnDismissListener {
 	private static final String ERROR = "error";
 	private static final String CANCEL = "cancel";
 
-	@Nullable
 	protected VKError mVkError;
 	protected WebView mWebView;
 	protected View mProgress;
@@ -72,7 +69,7 @@ public class VKOpenAuthDialog implements DialogInterface.OnDismissListener {
 	protected int mReqCode;
 	protected AlertDialog mAlertDialog;
 
-	public void show(@NonNull Activity activity, Bundle bundle, int reqCode, @Nullable VKError vkError) {
+	public void show(Activity activity, Bundle bundle, int reqCode, VKError vkError) {
 		mVkError = vkError;
 		mBundle = bundle;
 		mReqCode = reqCode;
@@ -135,10 +132,9 @@ public class VKOpenAuthDialog implements DialogInterface.OnDismissListener {
 
 	private static class OAuthWebViewClient extends WebViewClient {
 		boolean canShowPage = true;
-		@NonNull
 		final VKOpenAuthDialog vkOpenAuthDialog;
 
-		public OAuthWebViewClient(@NonNull VKOpenAuthDialog vkOpenAuthDialog) {
+		public OAuthWebViewClient(VKOpenAuthDialog vkOpenAuthDialog) {
 			this.vkOpenAuthDialog = vkOpenAuthDialog;
 		}
 

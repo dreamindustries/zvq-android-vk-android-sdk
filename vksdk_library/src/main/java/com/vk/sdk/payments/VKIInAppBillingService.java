@@ -29,7 +29,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -155,7 +154,7 @@ public final class VKIInAppBillingService {
     /**
      * @param iInAppBillingService implementation of com.android.vending.billing.IInAppBillingService
      */
-    public VKIInAppBillingService(@NonNull Object iInAppBillingService) {
+    public VKIInAppBillingService(Object iInAppBillingService) {
         this.mIInAppBillingService = iInAppBillingService;
 
         Class<?> mIInAppBillingServiceClass;
@@ -178,8 +177,8 @@ public final class VKIInAppBillingService {
      * @return RESULT_OK(0) on success, corresponding result code on failures
      */
     public int isBillingSupported(final int apiVersion,
-                                  @NonNull final String packageName,
-                                  @NonNull final String type) throws android.os.RemoteException {
+                                  final String packageName,
+                                  final String type) throws android.os.RemoteException {
         try {
             return (Integer) sMethodIsBillingSupported.invoke(mIInAppBillingService, apiVersion, packageName, type);
         } catch (Exception e) {
@@ -205,17 +204,17 @@ public final class VKIInAppBillingService {
      * "title : "Example Title", "description" : "This is an example description" }'
      */
     public Bundle getSkuDetails(final int apiVersion,
-                                @NonNull final String packageName,
-                                @NonNull final String type,
-                                @NonNull final Bundle skusBundle) throws android.os.RemoteException {
+                                final String packageName,
+                                final String type,
+                                final Bundle skusBundle) throws android.os.RemoteException {
         return getSkuDetails(mIInAppBillingService, apiVersion, packageName, type, skusBundle);
     }
 
-    private static Bundle getSkuDetails(@NonNull final Object iInAppBillingService,
+    private static Bundle getSkuDetails(final Object iInAppBillingService,
                                         final int apiVersion,
-                                        @NonNull final String packageName,
-                                        @NonNull final String type,
-                                        @NonNull final Bundle skusBundle) throws android.os.RemoteException {
+                                        final String packageName,
+                                        final String type,
+                                        final Bundle skusBundle) throws android.os.RemoteException {
         try {
             return (Bundle) sMethodGetSkuDetails.invoke(iInAppBillingService, apiVersion, packageName, type, skusBundle);
         } catch (Exception e) {
@@ -253,10 +252,10 @@ public final class VKIInAppBillingService {
      * was signed with the private key of the developer
      */
     public Bundle getBuyIntent(final int apiVersion,
-                               @NonNull final String packageName,
-                               @NonNull final String sku,
-                               @NonNull final String type,
-                               @NonNull String developerPayload) throws android.os.RemoteException {
+                               final String packageName,
+                               final String sku,
+                               final String type,
+                               String developerPayload) throws android.os.RemoteException {
         try {
             return (Bundle) sMethodGetBuyIntent.invoke(mIInAppBillingService, apiVersion, packageName, sku, type, developerPayload);
         } catch (Exception e) {
@@ -290,17 +289,17 @@ public final class VKIInAppBillingService {
      * user has more owned skus than the current list.
      */
     public Bundle getPurchases(final int apiVersion,
-                               @NonNull final String packageName,
-                               @NonNull final String type,
-                               @NonNull final String continuationToken) throws android.os.RemoteException {
+                               final String packageName,
+                               final String type,
+                               final String continuationToken) throws android.os.RemoteException {
         return getPurchases(mIInAppBillingService, apiVersion, packageName, type, continuationToken);
     }
 
-    private static Bundle getPurchases(@NonNull final Object iInAppBillingService,
+    private static Bundle getPurchases(final Object iInAppBillingService,
                                        final int apiVersion,
-                                       @NonNull final String packageName,
-                                       @NonNull final String type,
-                                       @NonNull final String continuationToken) throws android.os.RemoteException {
+                                       final String packageName,
+                                       final String type,
+                                       final String continuationToken) throws android.os.RemoteException {
         try {
             return (Bundle) sMethodGetPurchases.invoke(iInAppBillingService, apiVersion, packageName, type, continuationToken);
         } catch (Exception e) {
@@ -319,8 +318,8 @@ public final class VKIInAppBillingService {
      * @return 0 if consumption succeeded. Appropriate error values for failures.
      */
     public int consumePurchase(final int apiVersion,
-                               @NonNull final String packageName,
-                               @NonNull final String purchaseToken) throws android.os.RemoteException {
+                               final String packageName,
+                               final String purchaseToken) throws android.os.RemoteException {
         String purchaseData = !VKPaymentsServerSender.isNotVkUser() //
                 ? getPurchaseData(mIInAppBillingService, apiVersion, packageName, purchaseToken) //
                 : null;
@@ -353,7 +352,7 @@ public final class VKIInAppBillingService {
      * @throws android.os.RemoteException
      */
     public static boolean consumePurchaseToVk(final int apiVersion,
-                                              @NonNull final String purchaseToken) throws android.os.RemoteException {
+                                              final String purchaseToken) throws android.os.RemoteException {
         if (Looper.getMainLooper().equals(Looper.myLooper())) {
             throw new RuntimeException("Network on main thread");
         }
@@ -430,10 +429,10 @@ public final class VKIInAppBillingService {
 
     // ---------- PRIVATE METHODS ----------
 
-    private static String getPurchaseData(@NonNull final Object iInAppBillingService,
+    private static String getPurchaseData(final Object iInAppBillingService,
                                           final int apiVersion,
-                                          @NonNull final String packageName,
-                                          @NonNull final String purchaseToken) throws RemoteException {
+                                          final String packageName,
+                                          final String purchaseToken) throws RemoteException {
         Bundle ownedItems = getPurchases(iInAppBillingService, apiVersion, packageName, "inapp", purchaseToken);
         ArrayList<String> purchaseDataList = ownedItems.getStringArrayList(RESPONSE_INAPP_PURCHASE_DATA_LIST);
         if (purchaseDataList != null) {
@@ -453,10 +452,10 @@ public final class VKIInAppBillingService {
         return null;
     }
 
-    private static Receipt getReceipt(@NonNull final Object iInAppBillingService,
+    private static Receipt getReceipt(final Object iInAppBillingService,
                                       final int apiVersion,
-                                      @NonNull final String packageName,
-                                      @NonNull final String receiptOriginal) throws JSONException, RemoteException {
+                                      final String packageName,
+                                      final String receiptOriginal) throws JSONException, RemoteException {
         JSONObject objectReceipt = new JSONObject(receiptOriginal);
 
         Receipt receipt = new Receipt();

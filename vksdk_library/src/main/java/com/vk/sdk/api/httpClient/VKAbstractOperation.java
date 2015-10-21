@@ -21,8 +21,6 @@
 
 package com.vk.sdk.api.httpClient;
 
-import android.support.annotation.Nullable;
-
 import com.vk.sdk.api.VKError;
 
 import java.util.concurrent.ExecutorService;
@@ -58,7 +56,6 @@ public abstract class VKAbstractOperation {
         setState(VKOperationState.Ready);
     }
 
-    @Nullable
     private ExecutorService mResponseQueue;
 
     /**

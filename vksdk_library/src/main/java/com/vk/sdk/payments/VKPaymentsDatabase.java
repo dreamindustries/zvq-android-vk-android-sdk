@@ -26,7 +26,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
 
 import java.util.HashSet;
 
@@ -71,7 +70,7 @@ class VKPaymentsDatabase extends SQLiteOpenHelper {
 
     // ---------- SQLITE OPEN HELPER PART ----------
 
-    public static VKPaymentsDatabase getInstance(@NonNull Context context) {
+    public static VKPaymentsDatabase getInstance(Context context) {
         if (sInstance == null) {
             synchronized (VKPaymentsDatabase.class) {
                 if (sInstance == null) {
@@ -82,7 +81,7 @@ class VKPaymentsDatabase extends SQLiteOpenHelper {
         return sInstance;
     }
 
-    private VKPaymentsDatabase(@NonNull Context context) {
+    private VKPaymentsDatabase(Context context) {
         super(context.getApplicationContext(), DATABASE_NAME, null, VERSION);
     }
 

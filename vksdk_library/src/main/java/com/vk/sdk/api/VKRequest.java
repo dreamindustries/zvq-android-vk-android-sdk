@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.vk.sdk.VKAccessToken;
@@ -123,7 +122,6 @@ public class VKRequest extends VKObject {
     /**
      * Specify listener for current request
      */
-    @Nullable
     public VKRequestListener requestListener;
 
     /**
@@ -242,7 +240,7 @@ public class VKRequest extends VKObject {
         VKSyncRequestUtil.executeSyncWithListener(this, listener);
     }
 
-    public void setRequestListener(@Nullable VKRequestListener listener) {
+    public void setRequestListener(VKRequestListener listener) {
         this.requestListener = listener;
     }
 

@@ -29,7 +29,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.annotation.Nullable;
 
 /**
  * Class for VK authorization and dialogs helping
@@ -49,7 +48,6 @@ public class VKUIHelper {
         }
     }
 
-    @Nullable
     public static Context getApplicationContext() {
         return sApplicationContext;
     }

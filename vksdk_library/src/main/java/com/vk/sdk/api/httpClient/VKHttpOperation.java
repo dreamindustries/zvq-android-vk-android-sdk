@@ -21,8 +21,6 @@
 
 package com.vk.sdk.api.httpClient;
 
-import android.support.annotation.Nullable;
-
 import com.vk.sdk.api.VKError;
 
 import java.io.IOException;
@@ -45,7 +43,6 @@ public class VKHttpOperation<ResponseType> extends VKAbstractOperation {
     /**
      * Response data from server
      */
-    @Nullable
     public VKHttpClient.VKHttpResponse response;
 
     /**

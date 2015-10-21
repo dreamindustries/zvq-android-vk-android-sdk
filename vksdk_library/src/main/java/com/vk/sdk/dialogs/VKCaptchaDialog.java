@@ -25,8 +25,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -61,7 +59,7 @@ public class VKCaptchaDialog {
      *
      * @param context Context activity for dialog
      */
-    public void show(@NonNull Context context, @Nullable DialogInterface.OnDismissListener onDismissListener) {
+    public void show(Context context, DialogInterface.OnDismissListener onDismissListener) {
         View innerView = View.inflate(context, R.layout.vk_captcha_dialog, null);
         assert innerView != null;
         mCaptchaAnswer = (EditText) innerView.findViewById(R.id.captchaAnswer);

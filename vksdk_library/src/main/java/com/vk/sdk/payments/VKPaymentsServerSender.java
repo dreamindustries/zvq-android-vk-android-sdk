@@ -27,8 +27,6 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -69,7 +67,7 @@ class VKPaymentsServerSender {
 
     private static VKPaymentsServerSender sInstance = null;
 
-    public static VKPaymentsServerSender getInstance(@NonNull Context ctx) {
+    public static VKPaymentsServerSender getInstance(Context ctx) {
         if (sInstance == null) {
             synchronized (VKPaymentsServerSender.class) {
                 if (sInstance == null) {
@@ -82,16 +80,14 @@ class VKPaymentsServerSender {
 
     // ---------- CLASS PART ----------
 
-    @NonNull
     private final Handler mHandler;
-    @NonNull
     private final Context mAppCtx;
 
     private volatile int mCheckUserInstallAnswer = -1;
 
     private final List<VKPaymentsCallback> mVkPaymentsCallbacks = new CopyOnWriteArrayList<>();
 
-    private VKPaymentsServerSender(@NonNull Context ctx) {
+    private VKPaymentsServerSender(Context ctx) {
         mAppCtx = ctx;
 
         mCheckUserInstallAnswer = restoreAnswer(ctx);
@@ -113,7 +109,7 @@ class VKPaymentsServerSender {
         });
     }
 
-    public void requestUserState(@NonNull VKPaymentsCallback callback) {
+    public void requestUserState(VKPaymentsCallback callback) {
         synchronized (VKPaymentsServerSender.class) {
             switch (mCheckUserInstallAnswer) {
                 case CHECK_USER_INSTALL_ANSWER_VK:
@@ -317,7 +313,6 @@ class VKPaymentsServerSender {
         }
     }
 
-    @Nullable
     private static String getDeviceId(Context ctx) {
         try {
             Class<?> advertisingIdClientClass = Class.forName("com.google.android.gms.ads.identifier.AdvertisingIdClient");

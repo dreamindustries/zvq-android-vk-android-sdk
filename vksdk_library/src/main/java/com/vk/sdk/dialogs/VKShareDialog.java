@@ -33,7 +33,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Display;
@@ -179,7 +178,6 @@ public class VKShareDialog extends DialogFragment {
         return this;
     }
 
-    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Context context = getActivity();

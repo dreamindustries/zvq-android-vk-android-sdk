@@ -25,8 +25,6 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -75,7 +73,7 @@ public class VKHttpClient {
      * @param vkRequest Request, created for some method
      * @return Prepared request for creating VKHttpOperation
      */
-    public static VKHTTPRequest requestWithVkRequest(@NonNull VKRequest vkRequest) {
+    public static VKHTTPRequest requestWithVkRequest(VKRequest vkRequest) {
         VKAccessToken token = VKAccessToken.currentToken();
         VKHTTPRequest result = new VKHTTPRequest(String.format(Locale.US, "http%s://api.vk.com/method/%s", vkRequest.secure || (token != null && token.httpsRequired) ? "s" : "", vkRequest.methodName));
         result.headers = getDefaultHeaders();
@@ -90,7 +88,7 @@ public class VKHttpClient {
      * @param files     Files array to upload
      * @return prepared HTTP request, ready for upload
      */
-    public static VKHTTPRequest fileUploadRequest(@NonNull String uploadUrl, File... files) {
+    public static VKHTTPRequest fileUploadRequest(String uploadUrl, File... files) {
         VKHTTPRequest request = new VKHTTPRequest(uploadUrl);
         request.entity = new VKMultipartEntity(files);
         return request;
@@ -103,7 +101,7 @@ public class VKHttpClient {
      * @param file      File to upload
      * @return prepared HTTP request, ready for upload
      */
-    public static VKHTTPRequest docUploadRequest(@NonNull String uploadUrl, File file) {
+    public static VKHTTPRequest docUploadRequest(String uploadUrl, File file) {
         VKHTTPRequest request = new VKHTTPRequest(uploadUrl);
         request.entity = new VKMultipartEntity(new File[]{file}, VKAttachments.TYPE_DOC);
         return request;
@@ -183,7 +181,7 @@ public class VKHttpClient {
         public boolean isAborted = false;
         public HttpURLConnection connection;
 
-        public VKHTTPRequest(@Nullable String url) {
+        public VKHTTPRequest(String url) {
             if (url != null) {
                 try {
                     this.methodUrl = new URL(url);
@@ -201,7 +199,7 @@ public class VKHttpClient {
          * @param os Output stream for parameters
          * @throws IOException
          */
-        void writeParams(@NonNull OutputStream os) throws IOException {
+        void writeParams(OutputStream os) throws IOException {
             if (this.entity != null) {
                 this.entity.writeTo(os);
             } else {

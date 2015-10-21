@@ -3,112 +3,107 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 19
     buildToolsVersion '22.0.1'
 
-    defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 22
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
-}
 
-configurations {
-    // Used for correct javadoc generation
-    javadocDeps
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+    }
 }
 
 dependencies {
-    javadocDeps 'com.android.support:support-annotations:23.0.0'
-    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.android.support:support-v4:19.1.+'
 }
 
-if (project.hasProperty('officialBuild')) {
-    def String releaseRepositoryUrl = hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL : 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-    def String snapshotRepositoryUrl = hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL : 'https://oss.sonatype.org/content/repositories/snapshots/'
-    def String repositoryUsername = hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ''
-    def String repositoryPassword = hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ''
+def String releaseRepositoryUrl = hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL : 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+def String snapshotRepositoryUrl = hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL : 'https://oss.sonatype.org/content/repositories/snapshots/'
+def String repositoryUsername = hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ''
+def String repositoryPassword = hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ''
 
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-                pom.project {
-                    artifactId = 'androidsdk'
-                    name = 'VK API library'
-                    packaging = 'aar'
-                    description = 'Main VK Android API library'
-                    url = 'https://github.com/VKCOM/vk-android-sdk'
-                    scm {
-                        url 'https://github.com/VKCOM/vk-android-sdk'
-                        connection 'scm:git:git://github.com/VKCOM/vk-android-sdk.git'
-                        developerConnection 'scm:git:git://github.com/VKCOM/vk-android-sdk.git'
+            pom.project {
+                artifactId = 'androidsdk'
+                name = 'VK API library'
+                packaging = 'aar'
+                description = 'Main VK Android API library'
+                url = 'https://github.com/VKCOM/vk-android-sdk'
+                scm {
+                    url 'https://github.com/VKCOM/vk-android-sdk'
+                    connection 'scm:git:git://github.com/VKCOM/vk-android-sdk.git'
+                    developerConnection 'scm:git:git://github.com/VKCOM/vk-android-sdk.git'
+                }
+                licenses {
+                    license {
+                        name "MIT License"
+                        url 'https://github.com/VKCOM/vk-android-sdk/raw/master/LICENSE'
+                        distribution 'repo'
                     }
-                    licenses {
-                        license {
-                            name "MIT License"
-                            url 'https://github.com/VKCOM/vk-android-sdk/raw/master/LICENSE'
-                            distribution 'repo'
+                }
+                developers {
+                    developer {
+                        id 'dreddik'
+                        name 'Roman Truba'
+                        email 'roman@vk.com'
+                        url 'http://vk.com'
+                        organization 'VK'
+                        organizationUrl 'http://vk.com'
+                        roles {
+                            role 'developer'
                         }
-                    }
-                    developers {
-                        developer {
-                            id 'dreddik'
-                            name 'Roman Truba'
-                            email 'roman@vk.com'
-                            url 'http://vk.com'
-                            organization 'VK'
-                            organizationUrl 'http://vk.com'
-                            roles {
-                                role 'developer'
-                            }
-                            timezone '+4'
-                        }
+                        timezone '+4'
                     }
                 }
+            }
 
-                repository(url: releaseRepositoryUrl) {
-                    authentication(userName: repositoryUsername, password: repositoryPassword)
-                }
-                snapshotRepository(url: snapshotRepositoryUrl) {
-                    authentication(userName: repositoryUsername, password: repositoryPassword)
-                }
+            repository(url: releaseRepositoryUrl) {
+                authentication(userName: repositoryUsername, password: repositoryPassword)
+            }
+            snapshotRepository(url: snapshotRepositoryUrl) {
+                authentication(userName: repositoryUsername, password: repositoryPassword)
             }
         }
     }
+}
 
-    task sourcesJar(type: Jar) {
-        from android.sourceSets.main.java.srcDirs
-        classifier = 'sources'
-    }
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
 
-    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-        classpath += configurations.javadocDeps
-    }
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
 
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
 
-    artifacts {
-        archives javadocJar
-        archives sourcesJar
-    }
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
 
-    signing {
-        required true
-        sign configurations.archives
-    }
+signing {
+    required false
+}
 
-    //Turn off javadoc errors
-    if (JavaVersion.current().isJava8Compatible()) {
-        allprojects {
-            tasks.withType(Javadoc) {
-                options.addStringOption('Xdoclint:none', '-quiet')
-            }
+//Turn off javadoc errors
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
         }
     }
 }

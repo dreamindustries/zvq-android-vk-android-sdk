@@ -1,5 +1,6 @@
 package com.vk.vktestapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,16 +8,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApi;
@@ -268,7 +266,7 @@ public class TestActivity extends ActionBarActivity {
 			}
 		}
 
-		private static void recycleBitmap(@Nullable final Bitmap bitmap) {
+		private static void recycleBitmap(final Bitmap bitmap) {
 			if (bitmap != null) {
 				bitmap.recycle();
 			}
@@ -303,7 +301,7 @@ public class TestActivity extends ActionBarActivity {
 			request.executeWithListener(new VKRequestListener() {
 				@Override
 				public void onComplete(VKResponse response) {
-					final Context context = getContext();
+					final Context context = getActivity();
 					if (context == null || !isAdded()) {
 						return;
 					}

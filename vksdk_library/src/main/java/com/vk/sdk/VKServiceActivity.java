@@ -27,11 +27,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.vk.sdk.api.VKError;
@@ -93,7 +90,7 @@ public class VKServiceActivity extends Activity implements DialogInterface.OnDis
      * @param act       current running activity
      * @param scopeList authorization
      */
-    static void startLoginActivity(@NonNull Activity act, @NonNull ArrayList<String> scopeList) {
+    static void startLoginActivity(Activity act, ArrayList<String> scopeList) {
         Intent intent = createIntent(act.getApplicationContext(), VKServiceType.Authorization);
         intent.putStringArrayListExtra(KEY_SCOPE_LIST, scopeList);
         act.startActivityForResult(intent, VKServiceType.Authorization.getOuterCode());
@@ -107,7 +104,7 @@ public class VKServiceActivity extends Activity implements DialogInterface.OnDis
      * @param scopeList authorization
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    static void startLoginActivity(@NonNull Fragment fr, ArrayList<String> scopeList) {
+    static void startLoginActivity(Fragment fr, ArrayList<String> scopeList) {
         Intent intent = createIntent(fr.getActivity().getApplication(), VKServiceType.Authorization);
         intent.putStringArrayListExtra(KEY_SCOPE_LIST, scopeList);
         fr.startActivityForResult(intent, VKServiceType.Authorization.getOuterCode());
@@ -115,7 +112,6 @@ public class VKServiceActivity extends Activity implements DialogInterface.OnDis
 
     // ---------- PRIVATE METHODS ----------
 
-    @NonNull
     private static Intent createIntent(Context appCtx, VKServiceType type) {
         Intent intent = new Intent(appCtx, VKServiceActivity.class);
         intent.putExtra(KEY_TYPE, type.name());
@@ -123,12 +119,10 @@ public class VKServiceActivity extends Activity implements DialogInterface.OnDis
         return intent;
     }
 
-    @NonNull
     private VKServiceType getType() {
         return VKServiceType.valueOf(getIntent().getStringExtra(KEY_TYPE));
     }
 
-    @Nullable
     private ArrayList<String> getScopeList() {
         return getIntent().getStringArrayListExtra(KEY_SCOPE_LIST);
     }

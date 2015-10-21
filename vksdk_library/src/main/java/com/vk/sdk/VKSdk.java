@@ -32,8 +32,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -240,7 +238,7 @@ public class VKSdk {
      * @param activity current running activity
      * @param scope    array of permissions for your applications. All permissions you can
      */
-    public static void login(@NonNull Activity activity, String... scope) {
+    public static void login(Activity activity, String... scope) {
         VKServiceActivity.startLoginActivity(activity, requestedPermissions = preparingScopeList(scope));
     }
 
@@ -251,11 +249,11 @@ public class VKSdk {
      * @param fragment current running fragment
      * @param scope    array of permissions for your applications. All permissions you can
      */
-    public static void login(@NonNull Fragment fragment, String... scope) {
+    public static void login(Fragment fragment, String... scope) {
         VKServiceActivity.startLoginActivity(fragment, requestedPermissions = preparingScopeList(scope));
     }
 
-    public static boolean onActivityResult(int requestCode, int resultCode, @NonNull Intent data, @NonNull VKCallback<VKAccessToken> vkCallback) {
+    public static boolean onActivityResult(int requestCode, int resultCode, Intent data, VKCallback<VKAccessToken> vkCallback) {
         if (requestCode == VKServiceActivity.VKServiceType.Authorization.getOuterCode()) {
             if (resultCode == VKSdk.RESULT_OK) {
                 vkCallback.onResult(VKAccessToken.currentToken());
@@ -268,7 +266,6 @@ public class VKSdk {
         }
     }
 
-    @NonNull
     private static ArrayList<String> preparingScopeList(String... scope) {
         if (scope == null) {
             scope = new String[]{};
@@ -292,8 +289,8 @@ public class VKSdk {
      * @param callback   activity result processing callback
      * @return If SDK parsed activity result properly, returns true. You can return from onActivityResult(). Otherwise, returns false.
      */
-    static boolean processActivityResult(@NonNull Context ctx, int resultCode, @Nullable Intent result,
-                                         @Nullable VKCallback<VKAccessToken> callback) {
+    static boolean processActivityResult(Context ctx, int resultCode, Intent result,
+                                         VKCallback<VKAccessToken> callback) {
         if (resultCode != Activity.RESULT_OK || result == null) {
             //Result isn't ok, maybe user canceled
             if (callback != null) {
@@ -346,7 +343,7 @@ public class VKSdk {
      * @param tokenParams params of token
      * @return true if access token was set, or error was provided
      */
-    private static CheckTokenResult checkAndSetToken(@NonNull Context ctx, @Nullable Map<String, String> tokenParams) {
+    private static CheckTokenResult checkAndSetToken(Context ctx, Map<String, String> tokenParams) {
         if (tokenParams != null && requestedPermissions != null) {
             tokenParams.put(VKAccessToken.SCOPE, TextUtils.join(",", requestedPermissions));
         }
@@ -392,7 +389,7 @@ public class VKSdk {
      * @param context An application context for store an access token
      * @return true, if an access token exists and not expired
      */
-    public static boolean wakeUpSession(@NonNull Context context) {
+    public static boolean wakeUpSession(Context context) {
         return wakeUpSession(context, null);
     }
 
@@ -403,7 +400,7 @@ public class VKSdk {
      * @param loginStateCallback if callback specified, {@link VKCallback#onResult(Object)} method will be called after login state changed
      * @return true, if an access token exists and not expired
      */
-    public static boolean wakeUpSession(@NonNull final Context context, final VKCallback<LoginState> loginStateCallback) {
+    public static boolean wakeUpSession(final Context context, final VKCallback<LoginState> loginStateCallback) {
         final Context appContext = context.getApplicationContext();
         VKUIHelper.setApplicationContext(appContext);
 
@@ -432,7 +429,7 @@ public class VKSdk {
         return false;
     }
 
-    private static void onAccessTokenIsInvalid(@NonNull Context ctx) {
+    private static void onAccessTokenIsInvalid(Context ctx) {
         VKAccessToken old = VKAccessToken.replaceToken(ctx, null);
         if (old != null) {
             notifyVKTokenChanged(old, null);
@@ -456,13 +453,9 @@ public class VKSdk {
     @SuppressLint("NewApi")
     public static void logout() {
         Context context = VKUIHelper.getApplicationContext();
-        if (Build.VERSION.SDK_INT < 21) {
-            CookieSyncManager.createInstance(context);
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.removeAllCookie();
-        } else {
-            CookieManager.getInstance().removeAllCookies(null);
-        }
+        CookieSyncManager.createInstance(context);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookie();
 
         VKAccessToken.replaceToken(VKUIHelper.getApplicationContext(), null);
 
@@ -531,7 +524,7 @@ public class VKSdk {
         }
     }
 
-    private static boolean hasInStack(@NonNull final Class<?> clazz, @NonNull final String method) {
+    private static boolean hasInStack(final Class<?> clazz, final String method) {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         for (int i = stackTrace.length - 2; i >= 0; --i) {
             StackTraceElement element = stackTrace[i];
@@ -548,24 +541,24 @@ public class VKSdk {
         return false;
     }
 
-    private static int getIntFromPref(@NonNull Context ctx, @NonNull String key) {
+    private static int getIntFromPref(Context ctx, String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         return prefs.getInt(key, 0);
     }
 
-    private static void storeIntToPref(@NonNull Context ctx, @NonNull String key, int value) {
+    private static void storeIntToPref(Context ctx, String key, int value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putInt(key, value);
         edit.apply();
     }
 
-    private static String getStringFromPref(@NonNull Context ctx, @NonNull String key, String def) {
+    private static String getStringFromPref(Context ctx, String key, String def) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         return prefs.getString(key, def);
     }
 
-    private static void storeStringToPref(@NonNull Context ctx, @NonNull String key, String value) {
+    private static void storeStringToPref(Context ctx, String key, String value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putString(key, value);

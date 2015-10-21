@@ -22,12 +22,6 @@
 
 package com.vk.sdk.api;
 
-import android.support.annotation.NonNull;
-
-import com.vk.sdk.api.VKError;
-import com.vk.sdk.api.VKRequest;
-import com.vk.sdk.api.VKResponse;
-
 class VKSyncRequestUtil {
 
     private static class Listener extends VKRequest.VKRequestListener {
@@ -67,7 +61,7 @@ class VKSyncRequestUtil {
         }
     }
 
-    public static void executeSyncWithListener(@NonNull VKRequest vkRequest, @NonNull VKRequest.VKRequestListener vkListener) {
+    public static void executeSyncWithListener(VKRequest vkRequest, VKRequest.VKRequestListener vkListener) {
         Listener listener = new Listener(vkListener);
         vkRequest.setUseLooperForCallListener(false);
         vkRequest.executeWithListener(listener);
